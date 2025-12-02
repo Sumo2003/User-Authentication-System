@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Dashboard | Auth System</title>
+  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+</head>
+
+<body>
+  <main class="page">
+    <section class="card-wrap">
+      <div class="card">
+        <h1 id="welcome">Welcome!</h1>
+        <p id="userInfo" class="muted">Loading your profile...</p>
+
+        <div class="meta-row">
+          <div class="meta-label">Email</div>
+          <div id="emailText" class="meta-value">—</div>
+        </div>
+
+        <div class="actions">
+          <button id="logoutBtn" class="btn btn-primary">Logout</button>
+          <a href="profile.html" class="btn btn-link">Profile</a>
+        </div>
+
+        <div id="loader" class="loader" aria-hidden="true"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // small helper to show message
+    function showMsg(text) { alert(text); }
+
+    (async function() {
+      const token = localStorage.getItem("token");
+
+      // if no token, go back to login
+      if (!token) {
+        showMsg("Please login first.");
+        return window.location.href = "index.html";
+      }
+
+      const loader = document.getElementById("loader");
+      loader.style.display = "block";
+
+      try {
+        // Try fetch protected user info
+        let res = await fetch("/api/auth/me", {
+          headers: { "Authorization": "Bearer " + token }
+        });
+
+        // If not ok (expired etc.), remove token and redirect
+        if (!res.ok) {
+          localStorage.removeItem("token");
+          showMsg("Session expired. Please login again.");
+          return window.location.href = "index.html";
+        }
+
+        const user = await res.json();
+
+        document.getElementById("welcome").textContent = `Welcome, ${user.name || "User"}!`;
+        document.getElementById("userInfo").textContent = user.lastLogin
+          ? `Last login: ${new Date(user.lastLogin).toLocaleString()}`
+          : "You're logged in.";
+        document.getElementById("emailText").textContent = user.email || "—";
+      } catch (err) {
+        console.error("Profile fetch error:", err);
+        showMsg("Unable to load profile. Try again later.");
+      } finally {
+        loader.style.display = "none";
+        document.getElementById("logoutBtn").style.display = "inline-block";
+      }
+    })();
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("token");
+      alert("Logged out");
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>
