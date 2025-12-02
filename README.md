@@ -1,31 +1,30 @@
 
-
 🔐 User Authentication System
 
 A secure and modular User Authentication System built using Node.js, Express, JWT, and bcrypt.
-Provides user signup, login, password hashing, token-based authentication, and protected routes — following security best practices and clean architecture.
+It provides user signup, login, password hashing, token-based authentication, and protected routes — implemented using clean architecture and industry best-practice security standards.
 
 ✨ Features
 
 🔑 User Registration & Login
 
-🛡️ Password Hashing (bcrypt)
+🛡️ Password Hashing using bcrypt
 
 🔐 JWT Token Generation & Verification
 
-🚧 Protected Routes (Auth Middleware)
+🚧 Protected API Routes with Authentication Middleware
 
 📁 Modular Folder Structure (Models, Routes, Middleware)
 
-⚠️ Environment Variable Support (.env)
+⚠️ Environment Variable Support using .env
 
-🔌 MongoDB Integration (optional)
+🔌 MongoDB Integration
 
 📂 Folder Structure
 User-Authentication-System/
 │── routes/
-│   └── auth.js
-│   └── middleware/
+│   ├── auth.js
+│   ├── middleware/
 │   └── models/
 │
 │── server.js
@@ -44,7 +43,7 @@ JWT (JSON Web Tokens)
 
 bcrypt.js
 
-MongoDB (optional)
+MongoDB 
 
 ⚙️ Installation & Setup
 1️⃣ Clone the Repository
@@ -55,7 +54,7 @@ npm install
 
 3️⃣ Create a .env File
 
-Use the example:
+Use this template:
 
 JWT_SECRET=your_secret_key
 MONGO_URI=your_mongodb_connection
@@ -71,7 +70,7 @@ Server will run at:
 ➤ Register User
 
 POST /register
-Body example:
+Body:
 
 {
   "name": "Sumaira",
@@ -82,23 +81,19 @@ Body example:
 ➤ Login User
 
 POST /login
-Returns JWT token if credentials are valid.
+✔ Returns JWT token if credentials are valid.
 
 ➤ Protected Route
 
 GET /protected-route
-Accessible only with a valid JWT token in headers.
+✔ Accessible only with a valid JWT token in headers.
 
 🔒 Security Notes
 
 .env file is never uploaded to GitHub
 
-Passwords are hashed using bcrypt
+Passwords are securely hashed using bcrypt
 
-JWT tokens ensure secure, stateless authentication
+JWT tokens ensure stateless & secure authentication
 
-Sensitive data remains protected
-
-
-Unauthorized copying, distribution, or modification is strictly prohibited.
-© 2025 Sumaira
+Sensitive data stays protected
